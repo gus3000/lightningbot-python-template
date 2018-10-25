@@ -12,7 +12,7 @@ class ApiHandler:
 
     def __init__(self, mode: str = 'test', base_url: str = 'https://lightningbot.tk/api/'):
         self.url: str = base_url
-        self.nextMove: time = time.clock()
+        self.nextMove: time = time.perf_counter()
         self.pseudo: str
         self.token: str
         self.info: dict
@@ -35,20 +35,26 @@ class ApiHandler:
             print("Not implemented yet.")  # TODO
             exit(0)
 
-        self.info = json.loads(requests.get('/'.join([self.url, 'info', self.token])).text)
-        time.sleep(connect['wait'] / 1000)  # Wait the right time to ask for information
+        time.sleep(connect['wait'] / 1000)  # wait for the end of the connect phase
+        self.info = json.loads(requests.get('/'.join([self.url, 'info', self.token])).text)  # fetch info
+        self.nextMove = time.perf_counter() + (self.info['wait'] / 1000)
 
     def get_directions(self, current_turn) -> dict:
         res = requests.get('/'.join([self.url, 'directions', self.token, str(current_turn)]))
         return json.loads(res.text)
 
     def move(self, direction, current_turn) -> dict:
+        if time.perf_counter() < self.nextMove:  # if we moved too soon
+            time.sleep(self.nextMove - time.perf_counter())
+
         res = requests.get('/'.join([self.url, 'move', self.token, str(direction), str(current_turn)]))
         resd = json.loads(res.text)
-        while 'error' in resd and resd['error'] == 3:  # if we moved too soon
+        while 'error' in resd and resd['error'] == 3:  # this shouldn't happen, but you never know
+            print('Still early ? debug info :', current_turn, self.nextMove, time.perf_counter(), resd)
             time.sleep(resd['wait'] / 1000)
             res = requests.get('/'.join([self.url, 'move', self.token, str(direction), str(current_turn)]))
             resd = json.loads(res.text)
+        self.nextMove = time.perf_counter() + (resd['wait'] / 1000)
         return resd
 
 
