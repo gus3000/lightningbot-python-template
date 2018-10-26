@@ -29,6 +29,7 @@ class Direction(IntEnum):
     def valid(direction):
         return direction in [Direction.RIGHT, Direction.DOWN, Direction.LEFT, Direction.UP]
 
+
 class Bot:
     def __init__(self, mode: str = 'test'):
         self.api_handler: ApiHandler = ApiHandler(mode)
@@ -96,7 +97,13 @@ class ApiHandler:
             response = requests.get(
                 '/'.join([self.url, 'connect', self.pseudo]))  # Ask the server a token to play the game
             connect = json.loads(response.text)  # Get the answer as a json to read it easily
-            self.token = connect['token']
+            try:
+                self.token = connect['token']
+            except KeyError:
+                print('[' + self.pseudo + ']', 'Error while retrieving token.', 'Code', connect['error'], ':',
+                      connect['description'],
+                      file=sys.stderr)
+                exit(-1)
 
         else:
             print('Init Ranked mode')
@@ -118,7 +125,7 @@ class ApiHandler:
         res = requests.get('/'.join([self.url, 'directions', self.token, str(current_turn)]))
         current_directions = json.loads(res.text)
         while 'error' in current_directions and current_directions['error'] == 3:
-            time.sleep(current_directions['wait']/1000)
+            time.sleep(current_directions['wait'] / 1000)
             res = requests.get('/'.join([self.url, 'directions', self.token, str(current_turn)]))
             current_directions = json.loads(res.text)
 

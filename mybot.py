@@ -31,7 +31,7 @@ class MyBot(Bot):
         direction = random.choice([d for d in Direction if Direction.valid(d)
                                    and d != Direction.opposite(directions[self.pseudo])])
 
-        print("[" + self.pseudo + "]", "turn", current_turn, ": moving", direction)
+        print("[" + self.pseudo + "]", "turn", current_turn, ": moving", direction.name)
         return direction
 
 
