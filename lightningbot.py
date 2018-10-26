@@ -60,9 +60,11 @@ class ApiHandler:
             print("Not implemented yet.")  # TODO
             exit(0)
 
-        print('Connected to room', connect['name'], '! Waiting for info...')
+        print('Connected ! Waiting for info...')
+
         time.sleep(connect['wait'] / 1000)  # wait for the end of the connect phase
         self.info = json.loads(requests.get('/'.join([self.url, 'info', self.token])).text)  # fetch info
+        print('Room name :', self.info['name'])
         self.nextMove = time.perf_counter() + (self.info['wait'] / 1000)
 
     def get_directions(self, current_turn: int) -> dict:
