@@ -3,6 +3,7 @@ The lightningbot documentation is at https://lightningbot.tk/doc.
 
 To launch the project, execute :
 ```make run```
+
 You can also use
 ```make run 2```
 to run 2 bots at the same time, or, heck,
