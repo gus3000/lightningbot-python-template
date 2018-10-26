@@ -1,9 +1,6 @@
 import random
-import requests
-import json
-import time
-from enum import IntEnum
-from bot_template.lightningbot import Direction, ApiHandler, Bot
+
+from bot_template.lightningbot import Direction, Bot
 
 
 class MyBot(Bot):
@@ -25,15 +22,16 @@ class MyBot(Bot):
         # TODO fill in your code here
         # use Direction.UP, Direction.DOWN, Direction.LEFT or Direction.RIGHT
         # for example go down :
-        direction = Direction.DOWN
+        # direction = Direction.DOWN
 
         # or choose a random direction (spoiler : it will die quickly):
         # direction = random.choice([d for d in Direction])
 
         # or choose a random direction expect the opposite one :
-        # direction = random.choice([d for d in Direction if Direction.valid(d)
-        # and d != Direction.opposite(directions[self.pseudo])])
+        direction = random.choice([d for d in Direction if Direction.valid(d)
+                                   and d != Direction.opposite(directions[self.pseudo])])
 
+        print("[" + self.pseudo + "]", "turn", current_turn, ": moving", direction)
         return direction
 
 

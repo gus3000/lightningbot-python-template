@@ -54,7 +54,7 @@ class Bot:
         direction = self.move(current_turn=current_turn, directions=Bot.better_directions(directions),
                               api_directions=directions)
 
-        print('moving', direction.name)
+        # print('moving', direction.name)
         move_result = self.api_handler.move(direction=direction, current_turn=current_turn)
 
         return True
