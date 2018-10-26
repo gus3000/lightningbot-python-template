@@ -29,10 +29,10 @@ class Bot:
 
 class Direction(IntEnum):
     INIT = -1
-    UP = 0
+    RIGHT = 0
     DOWN = 1
     LEFT = 2
-    RIGHT = 3
+    UP = 3
 
 
 class ApiHandler:
