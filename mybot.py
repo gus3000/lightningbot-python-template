@@ -16,7 +16,7 @@ class MyBot(Bot):
         :param current_turn: the current turn
         :param api_directions: the bots' current directions (before moving), as given by the API
         :param directions: the bots' current directions, as a dictionnary
-            ex : {'player1': Direction.DOWN, 'player2': Direction.RIGHT
+            ex : {'player1': Direction.DOWN, 'player2': Direction.RIGHT}
         :return: the wanted Direction
         """
         # TODO fill in your code here
